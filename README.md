@@ -1,6 +1,6 @@
 # Lev Doronkin aws task 2 app
 
-Link to cloudfront: https://d15g5xdld4p9mr.cloudfront.net/
+<a href="https://d15g5xdld4p9mr.cloudfront.net/" target="_blank">Link to cloudfront</a>
 
 # React-shop-cloudfront
 
