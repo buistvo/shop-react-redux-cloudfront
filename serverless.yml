@@ -14,7 +14,7 @@ plugins:
 
 custom:
   client:
-    bucketName: lev-aws-react-project-bucket-app
+    bucketName: lev-aws-react-project-bucket
     distributionFolder: dist
   s3BucketName: ${self:custom.client.bucketName}
 

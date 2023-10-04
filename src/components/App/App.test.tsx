@@ -3,7 +3,7 @@ import { test, expect } from "vitest";
 import App from "~/components/App/App";
 import { server } from "~/mocks/server";
 import { rest } from "msw";
-import API_PATHS from "~/constants/apiPaths";
+import API_PATH from "~/constants/apiPaths";
 import { CartItem } from "~/models/CartItem";
 import { AvailableProduct } from "~/models/Product";
 import { renderWithProviders } from "~/testUtils";
@@ -28,14 +28,14 @@ test("Renders products list", async () => {
     },
   ];
   server.use(
-    rest.get(`${API_PATHS.bff}/product/available`, (req, res, ctx) => {
+    rest.get(`${API_PATH}/product/available`, (req, res, ctx) => {
       return res(
         ctx.status(200),
         ctx.delay(),
         ctx.json<AvailableProduct[]>(products)
       );
     }),
-    rest.get(`${API_PATHS.cart}/profile/cart`, (req, res, ctx) => {
+    rest.get(`${API_PATH}/profile/cart`, (req, res, ctx) => {
       return res(ctx.status(200), ctx.json<CartItem[]>([]));
     })
   );
