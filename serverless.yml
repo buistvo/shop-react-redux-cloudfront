@@ -5,7 +5,7 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: nodejs18.x
-  region: eu-west-1
+  region: eu-north-1
   profile: default
 
 plugins:
@@ -14,7 +14,7 @@ plugins:
 
 custom:
   client:
-    bucketName: lev-aws-react-project-bucket-app
+    bucketName: lev-aws-react-project-bucket
     distributionFolder: dist
   s3BucketName: ${self:custom.client.bucketName}
 

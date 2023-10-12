@@ -7,14 +7,17 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { theme } from "~/theme";
-import { worker } from "./mocks/browser";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { refetchOnWindowFocus: false, retry: false, staleTime: Infinity },
   },
 });
 
-worker.start({ onUnhandledRequest: "bypass" });
+if (import.meta.env.DEV) {
+  const { worker } = await import("./mocks/browser");
+  worker.start({ onUnhandledRequest: "bypass" });
+}
 
 const container = document.getElementById("app");
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
