@@ -53,8 +53,7 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
       console.log("Result: ", result);
     } catch (error: any) {
       console.log("error", error);
-
-      navigate("/error", { state: { error: { message: error.message } } });
+      navigate("/error", { state: { error: { message: error.data.message } } });
     }
   };
   return (
