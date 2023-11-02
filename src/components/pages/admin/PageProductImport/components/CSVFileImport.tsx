@@ -2,6 +2,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 type CSVFileImportProps = {
   url: string;
@@ -9,6 +10,8 @@ type CSVFileImportProps = {
 };
 
 export default function CSVFileImport({ url, title }: CSVFileImportProps) {
+  const navigate = useNavigate();
+
   const [file, setFile] = React.useState<File>();
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,25 +30,32 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
     console.log("uploadFile to", url);
 
     // Get the presigned URL
-    const response = await axios({
-      method: "GET",
-      url,
-      params: {
-        name: encodeURIComponent(file!.name),
-      },
-    });
-    console.log("File to upload: ", file!.name);
-    console.log("Uploading to: ", response.data);
-    const authToken = localStorage.getItem("authorization_token");
-    const result = await fetch(response.data.signedUrl, {
-      method: "PUT",
-      body: file,
-      headers: {
-        authorization: `Basic ${authToken}`,
-      },
-    });
-    console.log("Result: ", result);
-    setFile(undefined);
+    try {
+      const authToken = localStorage.getItem("authorization_token");
+
+      const response = await axios({
+        method: "GET",
+        url,
+        params: {
+          name: encodeURIComponent(file!.name),
+        },
+        headers: {
+          authorization: `Basic ${authToken}`,
+        },
+      });
+      console.log("File to upload: ", file!.name);
+      console.log("Uploading to: ", response.data);
+      const result = await fetch(response.data.signedUrl, {
+        method: "PUT",
+        body: file,
+      });
+      setFile(undefined);
+      console.log("Result: ", result);
+    } catch (error: any) {
+      console.log("error", error);
+
+      navigate("/error", { state: { error: { message: error.message } } });
+    }
   };
   return (
     <Box>
