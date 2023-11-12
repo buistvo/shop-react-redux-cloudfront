@@ -16,19 +16,38 @@ export default function AddProductToCart({ product }: AddProductToCartProps) {
 
   const { mutate: upsertCart } = useUpsertCart();
   const invalidateCart = useInvalidateCart();
+  const cartItems = cart?.cartItems ?? [];
+
   const cartItem = cart?.cartItems.find((i) => i.product.id === product.id);
 
   const addProduct = () => {
-    upsertCart(
-      { product, count: cartItem ? cartItem.count + 1 : 1 },
-      { onSuccess: invalidateCart }
-    );
+    const updatedItemDto = {
+      product_id: product.id ?? "",
+      count: cartItem ? cartItem.count : 1,
+    };
+    upsertCart([
+      ...cartItems.map((ci) => ({
+        product_id: ci.product.id ?? "",
+        count: ci.count,
+      })),
+      updatedItemDto,
+    ]),
+      {
+        onSuccess: invalidateCart,
+      };
   };
 
   const removeProduct = () => {
     if (cartItem) {
       upsertCart(
-        { ...cartItem, count: cartItem.count - 1 },
+        cartItems.map((ci) => ({
+          product_id: ci.product.id ?? "",
+          count:
+            cartItem.product.id === product.id
+              ? cartItem.count - 1
+              : cartItem.count,
+        })),
+
         { onSuccess: invalidateCart }
       );
     }
