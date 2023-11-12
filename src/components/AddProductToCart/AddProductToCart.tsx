@@ -23,7 +23,7 @@ export default function AddProductToCart({ product }: AddProductToCartProps) {
   const addProduct = () => {
     const updatedItemDto = {
       product_id: product.id ?? "",
-      count: cartItem ? cartItem.count : 1,
+      count: cartItem ? cartItem.count + 1 : 1,
     };
     upsertCart([
       ...cartItems.map((ci) => ({
@@ -43,9 +43,7 @@ export default function AddProductToCart({ product }: AddProductToCartProps) {
         cartItems.map((ci) => ({
           product_id: ci.product.id ?? "",
           count:
-            cartItem.product.id === product.id
-              ? cartItem.count - 1
-              : cartItem.count,
+            cartItem.product.id === product.id ? cartItem.count - 1 : ci.count,
         })),
 
         { onSuccess: invalidateCart }
