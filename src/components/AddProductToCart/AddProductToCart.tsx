@@ -26,10 +26,12 @@ export default function AddProductToCart({ product }: AddProductToCartProps) {
       count: cartItem ? cartItem.count + 1 : 1,
     };
     upsertCart([
-      ...cartItems.map((ci) => ({
-        product_id: ci.product.id ?? "",
-        count: ci.count,
-      })),
+      ...cartItems
+        .filter((ci) => ci.product.id !== product.id)
+        .map((ci) => ({
+          product_id: ci.product.id ?? "",
+          count: ci.count,
+        })),
       updatedItemDto,
     ]),
       {
@@ -40,11 +42,18 @@ export default function AddProductToCart({ product }: AddProductToCartProps) {
   const removeProduct = () => {
     if (cartItem) {
       upsertCart(
-        cartItems.map((ci) => ({
-          product_id: ci.product.id ?? "",
-          count:
-            cartItem.product.id === product.id ? cartItem.count - 1 : ci.count,
-        })),
+        [
+          ...cartItems
+            .filter((ci) => ci.product.id !== product.id)
+            .map((ci) => ({
+              product_id: ci.product.id ?? "",
+              count: ci.count,
+            })),
+          {
+            product_id: cartItem.product.id ?? "",
+            count: cartItem.count - 1,
+          },
+        ],
 
         { onSuccess: invalidateCart }
       );
