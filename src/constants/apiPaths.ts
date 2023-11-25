@@ -4,7 +4,7 @@ const products_api = import.meta.env.DEV
 
 const cart_api = import.meta.env.DEV
   ? "http://localhost:3003/dev/api"
-  : "https://8m1eujh0gf.execute-api.eu-north-1.amazonaws.com/dev/api";
+  : "http://buistvo-cart-api-develop.eu-north-1.elasticbeanstalk.com/api";
 const API_PATHS = {
   product: products_api,
   order: "https://.execute-api.eu-west-1.amazonaws.com/dev",
